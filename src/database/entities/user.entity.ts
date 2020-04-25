@@ -1,30 +1,28 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, BeforeInsert, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { hashSync } from 'bcrypt';
 
 @Entity('users')
 export class UsersEntity {
     @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true, comment: 'ユーザーのプライマリーID' })
     id: string;
 
-    @Column({ comment: 'メールアドレス', unique: true, nullable: true })
-    email?: string;
-
-
-    @Column({ comment: '名前' })
+    @Column({ comment: '名前', unique: true })
     name: string;
 
-    @Column({ comment: '暗号化したログインパスワード', select: false, nullable: true })
-    password?: string;
+    @Column({ comment: '暗号化したログインパスワード', select: false, unique: true })
+    password: string;
 
-
-    @Column('tinyint', { comment: '性別', nullable: true })
-    gender?: number;
-
-    @Column('date', { comment: '生年月日', nullable: true })
-    birthday?: Date;
+    @BeforeInsert()
+    hashPassword() {
+        this.password = hashSync(this.password, 10);
+    }
 
     @CreateDateColumn()
-    readonly createdAt?: Date;
+    readonly createdAt: Date;
 
     @UpdateDateColumn()
-    readonly updatedAt?: Date;
+    readonly updatedAt: Date;
+
+    @DeleteDateColumn()
+    readonly deletedAt: Date
 }
