@@ -5,7 +5,7 @@ import { AuthModule } from 'src/auth/auth.module';
 
 const routes: Routes = [
 	{
-		path: 'signup',
+		path: 'signin',
 		module: AuthModule
 	},
 	{

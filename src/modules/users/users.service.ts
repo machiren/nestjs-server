@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository, FindManyOptions } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity } from '../../database/entities/user.entity';
+import { hashSync } from 'bcrypt';
 
 
 @Injectable()
@@ -21,6 +22,7 @@ export class UsersService {
 	}
 
 	signUp(body: any) {
+		body.password = hashSync(body.password, 10);
 		return this.repository.insert(body);
 	}
 }
