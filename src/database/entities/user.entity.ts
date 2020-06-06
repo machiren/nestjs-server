@@ -1,5 +1,4 @@
-import { Entity, Column, BeforeInsert, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
-import { hashSync } from 'bcrypt';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity('users')
 export class UsersEntity {
@@ -11,11 +10,6 @@ export class UsersEntity {
 
     @Column({ comment: '暗号化したログインパスワード', select: false, unique: true })
     password: string;
-
-    @BeforeInsert()
-    hashPassword() {
-        this.password = hashSync(this.password, 10);
-    }
 
     @CreateDateColumn()
     readonly createdAt: Date;

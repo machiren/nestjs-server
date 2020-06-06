@@ -7,7 +7,7 @@ export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @UseGuards(AuthGuard('local'))
-    @Post('signin')
+    @Post()
     signIn(@Req() req: any) {
         return this.authService.signIn(req.user);
     }
